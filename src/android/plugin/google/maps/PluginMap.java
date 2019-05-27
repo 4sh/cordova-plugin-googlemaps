@@ -426,7 +426,7 @@ public class PluginMap extends MyPlugin implements OnMarkerClickListener,
               map.setOnInfoWindowClickListener(PluginMap.this);
               map.setOnInfoWindowLongClickListener(PluginMap.this);
               map.setOnInfoWindowCloseListener(PluginMap.this);
-              map.setOnMyLocationClickListener(PluginMap.this);
+              // map.setOnMyLocationClickListener(PluginMap.this);
               map.setOnPoiClickListener(PluginMap.this);
 
               //Custom info window
@@ -844,7 +844,7 @@ public class PluginMap extends MyPlugin implements OnMarkerClickListener,
                   map.setOnMyLocationButtonClickListener(null);
                   map.setOnMapLoadedCallback(null);
                   map.setOnMarkerDragListener(null);
-                  map.setOnMyLocationClickListener(null);
+                  // map.setOnMyLocationClickListener(null);
                   map.setOnPoiClickListener(null);
                 } catch (SecurityException e) {
                   e.printStackTrace();
