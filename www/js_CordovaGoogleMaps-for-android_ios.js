@@ -739,6 +739,12 @@ CordovaGoogleMaps.prototype.getMap = function(div, mapOptions) {
       while(elem && elem.nodeType === Node.ELEMENT_NODE) {
         elemId = common.getPluginDomId(elem);
         if (common.shouldWatchByNative(elem)) {
+          if (!common.hasTransparentClass(elem)) {
+            // Add _gmaps_cdv_ class
+            common.attachTransparentClass(elem);
+          }
+
+
           if (elem.shadowRoot) {
             elem.shadowRoot.addEventListener('transitionend', self.onTransitionEnd.bind(self), {capture: true});
             elem.shadowRoot.addEventListener('scroll', self.followMaps.bind(self), {capture: true});
