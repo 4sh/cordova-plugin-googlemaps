@@ -188,7 +188,7 @@
 
     // Load the GoogleMap.m
     CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-    CordovaGoogleMaps *googlemaps = [cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
+    CordovaGoogleMaps *googlemaps = (CordovaGoogleMaps *)[cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
     [googlemaps.pluginLayer removePluginOverlay:self.panoramaCtrl];
     self.panoramaCtrl.attached = NO;
     self.isRemoved = YES;
@@ -216,7 +216,7 @@
 
     // Load the GoogleMap.m
     CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-    CordovaGoogleMaps *googlemaps = [cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
+    CordovaGoogleMaps *googlemaps = (CordovaGoogleMaps *)[cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
     [googlemaps.pluginLayer addPluginOverlay:self.panoramaCtrl];
     self.panoramaCtrl.attached = YES;
 
@@ -231,7 +231,7 @@
 
     // Load the GoogleMap.m
     CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-    CordovaGoogleMaps *googlemaps = [cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
+    CordovaGoogleMaps *googlemaps = (CordovaGoogleMaps *)[cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
     [googlemaps.pluginLayer removePluginOverlay:self.panoramaCtrl];
     self.panoramaCtrl.attached = NO;
 
