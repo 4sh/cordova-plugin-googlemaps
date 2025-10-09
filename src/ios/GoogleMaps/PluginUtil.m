@@ -191,8 +191,10 @@ static char CAAnimationGroupBlockKey;
   return kCLLocationCoordinate2DInvalid;
 }
 
-+ (CLLocationCoordinate2D)isPointOnTheGeodesicLine:(GMSPath *)path coordinate:(CLLocationCoordinate2D)point threshold:(double)threshold projection:(GMSProjection *)projection {
-  
++ (CLLocationCoordinate2D)isPointOnTheGeodesicLine:(GMSPath *)path
+                                        coordinate:(CLLocationCoordinate2D)point
+                                         threshold:(double)threshold
+                                        projection:(GMSProjection *)projection {
   int fingerSize = 40;  // assume finger size is 20px
   CGPoint touchPoint = [projection pointForCoordinate:CLLocationCoordinate2DMake(point.latitude, point.longitude)];
   GMSCoordinateBounds *possibleBounds = [[GMSCoordinateBounds alloc] init];
@@ -218,6 +220,7 @@ static char CAAnimationGroupBlockKey;
     p0 = CGPointMake(position1.latitude * 100000, position1.longitude * 100000);
     [points addObject:[NSValue valueWithCGPoint:p0]];
   }
+  
   for (int i = 0; i < [path count] - 1; i++) {
     value = (NSValue *)[points objectAtIndex:i];
     p0 = [value CGPointValue];
@@ -330,6 +333,7 @@ static char CAAnimationGroupBlockKey;
       mostClosePoint = [inspectPoints coordinateAtIndex:i];
     }
   }
+  
   return mostClosePoint;
 }
 
