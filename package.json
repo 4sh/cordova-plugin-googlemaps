@@ -24,6 +24,13 @@
     "cordova-ios",
     "cordova-browser"
   ],
+  "scripts": {
+    "test": "npm run lint",
+    "lint": "eslint ."
+  },
+  "author": "Masashi Katsumata, Hirbod Mirjavadi, Manuel Beck, 4SH",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/4sh/cordova-plugin-googlemaps",
   "engines": {
     "cordovaDependencies": {
       "2.7.0": {
@@ -38,26 +45,11 @@
       }
     }
   },
-  "scripts": {
-    "test": "jest && npm run eslint",
-    "jest": "jest",
-    "test:watch": "jest --watch",
-    "eslint": "node node_modules/eslint/bin/eslint www src"
-  },
-  "author": "Masashi Katsumata, Hirbod Mirjavadi, Manuel Beck, 4SH",
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/4sh/cordova-plugin-googlemaps",
   "devDependencies": {
-    "cordova-js": "^4.2.4",
-    "eslint": "^5.7.0",
-    "jest": "^23.6.0"
+    "@cordova/eslint-config": "^5.1.0"
   },
-  "dependencies": {
-    "cordova-common": "^3.1.0"
-  },
-  "main": ".eslintrc.js",
-  "directories": {
-    "test": "tests"
+  "eslintConfig": {
+    "extends": "@cordova/eslint-config/node"
   },
   "type": "commonjs"
 }
