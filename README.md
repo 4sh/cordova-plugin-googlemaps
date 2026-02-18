@@ -1,11 +1,17 @@
-# Cordova GoogleMaps plugin for Android, iOS and Browser v2.7.2
+# Cordova GoogleMaps plugin for Android, iOS and Browser
 
 This is a fork of https://github.com/mapsplugin/cordova-plugin-googlemaps.
 
-You might be interested in the https://github.com/4sh/squashed-cordova-plugin-googlemaps repository which contains only snapshot versions
-(commits were squashed to reduce history and improve installation time) currently used by multiple apps (some with 200k+ downloads) running in production.
+Maintenance is intentionally minimal and limited to compatibility updates with cordova-android and cordova-ios.
+
+You should consider using https://github.com/GitToTheHub/cordova-plugin-google-maps-sdk instead.
+It is actively maintained and provides a more complete and up-to-date implementation.
+
 
 ## Release Notes
+  - **v2.7.5** (Feb, 2026)
+    - Fix: (iOS) Plugin is now compatible with `cordova-ios` 8+
+
   - **v2.7.4** (Dec 08, 2025)
     - Fix: (Android) Google Play’s 16 KB page size compatibility requirement
 
