@@ -112,9 +112,8 @@
 
   This plugin works in browser application as well. One code for Android, iOS, and browsers!
   </description>
-  <repo>https://github.com/mapsplugin/cordova-plugin-googlemaps.git</repo>
-  <issue>https://github.com/mapsplugin/cordova-plugin-googlemaps/issues</issue>
-  <author>Masashi Katsumata, Hirbod</author>
+  <repo>https://github.com/4sh/cordova-plugin-googlemaps.git</repo>
+  <author>Masashi Katsumata, Hirbod, Manuel Beck, 4SH</author>
 
   <license>Apache-2.0</license>
 
