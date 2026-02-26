@@ -87,14 +87,16 @@
       // https://github.com/apache/cordova-ios/blob/582e35776f01ee03f32f0986de181bcf5eb4d232/CordovaLib/Classes/Public/CDVViewController.m#L577
       //
       CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
+      
       if ([plugin respondsToSelector:@selector(setViewController:)]) {
         [plugin setViewController:cdvViewController];
       }
+      
       if ([plugin respondsToSelector:@selector(setCommandDelegate:)]) {
         [plugin setCommandDelegate:cdvViewController.commandDelegate];
       }
-      [cdvViewController.pluginObjects setObject:plugin forKey:pluginId];
-      [cdvViewController.pluginsMap setValue:pluginId forKey:pluginId];
+      
+      [cdvViewController registerPlugin:plugin withPluginName:pluginId];
       [plugin pluginInitialize];
 
       //NSLog(@"--->loadPlugin : %@ className : %@, plugin : %@", pluginId, className, plugin);
@@ -153,13 +155,14 @@
 
     // Load the GoogleMap.m
     CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-    CordovaGoogleMaps *googlemaps = [cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
+    CordovaGoogleMaps *googlemaps = (CordovaGoogleMaps *)[cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
 
     // Detach the map view
     if ([command.arguments count] == 0) {
       [googlemaps.pluginLayer removePluginOverlay:self.mapCtrl];
       self.mapCtrl.attached = NO;
       self.mapCtrl.view = nil;
+      
     } else {
       self.mapCtrl.view = self.mapCtrl.map;
       [googlemaps.pluginLayer addPluginOverlay:self.mapCtrl];
@@ -169,6 +172,7 @@
       self.mapCtrl.isRenderedAtOnce = NO; //prevent unexpected animation
       [googlemaps.pluginLayer updateViewPosition:self.mapCtrl];
     }
+    
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
   }];
@@ -179,7 +183,7 @@
 
     // Load the GoogleMap.m
     CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-    CordovaGoogleMaps *googlemaps = [cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
+    CordovaGoogleMaps *googlemaps = (CordovaGoogleMaps *)[cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
     [googlemaps.pluginLayer addPluginOverlay:self.mapCtrl];
     self.mapCtrl.attached = YES;
 
@@ -194,7 +198,7 @@
 
     // Load the GoogleMap.m
     CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-    CordovaGoogleMaps *googlemaps = [cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
+    CordovaGoogleMaps *googlemaps = (CordovaGoogleMaps *)[cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
     [googlemaps.pluginLayer removePluginOverlay:self.mapCtrl];
     self.mapCtrl.attached = NO;
 
@@ -216,7 +220,7 @@
 
     // Load the GoogleMap.m
     CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-    CordovaGoogleMaps *googlemaps = [cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
+    CordovaGoogleMaps *googlemaps = (CordovaGoogleMaps *)[cdvViewController getCommandInstance:@"CordovaGoogleMaps"];
 
     // Save the map rectangle.
     if (![googlemaps.pluginLayer.pluginScrollView.HTMLNodes objectForKey:self.mapCtrl.divId]) {
@@ -258,20 +262,9 @@
   dispatch_async(dispatch_get_main_queue(), ^{
     [self.mapCtrl.map clear];
   });
-
-
-  CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-  CDVPlugin<IPluginProtocol> *plugin;
-  NSString *pluginName;
-  NSArray *keys = [self.mapCtrl.plugins allKeys];
-  for (int j = 0; j < [keys count]; j++) {
-    pluginName = [keys objectAtIndex:j];
-    plugin = [self.mapCtrl.plugins objectForKey:pluginName];
-    [plugin pluginUnload];
-
-    [cdvViewController.pluginObjects removeObjectForKey:pluginName];
-    [cdvViewController.pluginsMap setValue:nil forKey:pluginName];
-    //plugin = nil;
+  
+  for (id pluginName in [self.mapCtrl.plugins allKeys]) {
+    [[self.mapCtrl.plugins objectForKey:pluginName] pluginUnload];
   }
 
   [self.mapCtrl.plugins removeAllObjects];
@@ -279,7 +272,6 @@
   if (command != nil) {
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-
   }
 }
 

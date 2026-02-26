@@ -20,35 +20,17 @@
   //self.imgCache.totalCostLimit = 3 * 1024 * 1024 * 1024; // 3MB = Cache for image
 }
 
-- (void)pluginUnload
-{
-
-
+- (void)pluginUnload {
     // Plugin destroy
-    NSArray *keys = [self.mapCtrl.objects allKeys];
-    NSString *key;
-    for (int i = 0; i < [keys count]; i++) {
-        key = [keys objectAtIndex:i];
+    for (id key in [self.mapCtrl.objects allKeys]) {
         if ([key hasPrefix:@"groundoverlay_property"]) {
-          key = [key stringByReplacingOccurrencesOfString:@"_property" withString:@""];
-          GMSGroundOverlay *groundoverlay = (GMSGroundOverlay *)[self.mapCtrl.objects objectForKey:key];
+          GMSGroundOverlay *groundoverlay = (GMSGroundOverlay *)[self.mapCtrl.objects objectForKey:[key stringByReplacingOccurrencesOfString:@"_property" withString:@""]];
           groundoverlay.map = nil;
           groundoverlay = nil;
         }
+
         [self.mapCtrl.objects removeObjectForKey:key];
     }
-
-  //[self.imgCache removeAllObjects];
-  //self.imgCache = nil;
-
-  key = nil;
-  keys = nil;
-
-  NSString *pluginId = [NSString stringWithFormat:@"%@-groundoverlay", self.mapCtrl.overlayId];
-  CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-  [cdvViewController.pluginObjects removeObjectForKey:pluginId];
-  [cdvViewController.pluginsMap setValue:nil forKey:pluginId];
-  pluginId = nil;
 }
 
 -(void)setPluginViewController:(PluginViewController *)viewCtrl
@@ -305,7 +287,7 @@
 
 /**
  * Remove the ground overlay
- * @params key
+ * @params command First Argument is ground overlay ID
  */
 -(void)remove:(CDVInvokedUrlCommand *)command
 {
@@ -331,7 +313,7 @@
 
 /**
  * Set visibility
- * @params key
+ * @params command First Argument is ground overlay ID, Second is visibility
  */
 -(void)setVisible:(CDVInvokedUrlCommand *)command
 {
@@ -365,7 +347,7 @@
 
 /**
  * set image
- * @params key
+ * @params command First Argument is ground overlay ID, Second is image URL
  */
 -(void)setImage:(CDVInvokedUrlCommand *)command
 {
@@ -399,7 +381,7 @@
 
 /**
  * Set bounds
- * @params key
+ * @params command First Argument is ground overlay ID, Second is bounds
  */
 -(void)setBounds:(CDVInvokedUrlCommand *)command
 {
@@ -429,7 +411,7 @@
 
 /**
  * Set opacity
- * @params key
+ * @params command First Argument is ground overlay ID, Second is opacity
  */
 -(void)setOpacity:(CDVInvokedUrlCommand *)command
 {
@@ -450,7 +432,7 @@
 
 /**
  * Set bearing
- * @params key
+ * @params command First Argument is ground overlay ID, Second is bearing
  */
 -(void)setBearing:(CDVInvokedUrlCommand *)command
 {
@@ -468,10 +450,9 @@
 
 }
 
-
 /**
  * Set clickable
- * @params key
+ * @params command First Argument is ground overlay ID, Second is clickable
  */
 -(void)setClickable:(CDVInvokedUrlCommand *)command
 {
@@ -495,7 +476,7 @@
 
 /**
  * Set z-index
- * @params key
+ * @params command First Argument is ground overlay ID, Second is z-index
  */
 -(void)setZIndex:(CDVInvokedUrlCommand *)command
 {

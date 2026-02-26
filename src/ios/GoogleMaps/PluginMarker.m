@@ -25,7 +25,6 @@
 
 - (void)pluginUnload
 {
-
   // Plugin destroy
   NSArray *keys = [self.mapCtrl.objects allKeys];
   NSString *key;
@@ -46,20 +45,10 @@
   }
 
   [[UIImageCache sharedInstance] removeAllCachedImages];
-  key = nil;
-  keys = nil;
-
-
-  NSString *pluginId = [NSString stringWithFormat:@"%@-marker", self.mapCtrl.overlayId];
-  CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-  [cdvViewController.pluginObjects removeObjectForKey:pluginId];
-  //[cdvViewController.pluginsMap setValue:nil forKey:pluginId];
-  pluginId = nil;
 }
 
 /**
- * @param marker options
- * @return marker key
+ * @param command Contains the marker options
  */
 -(void)create:(CDVInvokedUrlCommand *)command
 {
@@ -100,6 +89,7 @@
   }];
 
 }
+
 - (void)_create:(NSString *)markerId markerOptions:(NSDictionary *)json callbackBlock:(void (^)(BOOL successed, id resultObj)) callbackBlock {
 
   if ([NSThread isMainThread] == NO) {
@@ -240,7 +230,7 @@
 
 /**
  * Show the infowindow of the current marker
- * @params markerId
+ * @params command The first argument contains the marker ID
  */
 -(void)showInfoWindow:(CDVInvokedUrlCommand *)command
 {
@@ -259,9 +249,9 @@
     }];
   }];
 }
+
 /**
  * Hide current infowindow
- * @params markerId
  */
 -(void)hideInfoWindow:(CDVInvokedUrlCommand *)command
 {
@@ -274,9 +264,11 @@
     }];
   }];
 }
+
 /**
- * @params markerId
- * @return current marker position with array(latitude, longitude)
+ * Get the position of the specified marker.
+ * Send as plugin result the current marker position with array(latitude, longitude)
+ * @params command The first argument contains the marker ID
  */
 -(void)getPosition:(CDVInvokedUrlCommand *)command
 {
@@ -301,7 +293,7 @@
 
 /**
  * Set title to the specified marker
- * @params markerId
+ * @params command Will contain the markerId as first argument
  */
 -(void)setTitle:(CDVInvokedUrlCommand *)command
 {
@@ -324,10 +316,9 @@
   }];
 }
 
-
 /**
- * Set title to the specified marker
- * @params markerId
+ * Set snippet to the specified marker
+ * @params command Will contain the markerId as first argument
  */
 -(void)setSnippet:(CDVInvokedUrlCommand *)command
 {
@@ -345,7 +336,7 @@
 
 /**
  * Remove the specified marker
- * @params markerId
+ * @params command Will contain the markerId as first argument
  */
 -(void)remove:(CDVInvokedUrlCommand *)command
 {
@@ -405,7 +396,7 @@
 
 /**
  * Set anchor of the marker
- * @params markerId
+ * @params command First argument is the markerId, second is anchorX, third is anchorY
  */
 -(void)setIconAnchor:(CDVInvokedUrlCommand *)command
 {
@@ -430,7 +421,7 @@
 
 /**
  * Set anchor of the info window
- * @params markerId
+ * @params command First argument is the markerId, second is anchorX, third is anchorY
  */
 -(void)setInfoWindowAnchor:(CDVInvokedUrlCommand *)command
 {
@@ -456,10 +447,9 @@
   }];
 }
 
-
 /**
  * Set opacity
- * @params markerId
+ * @params command The first argument contains the marker ID, the second is the opacity value
  */
 -(void)setOpacity:(CDVInvokedUrlCommand *)command
 {
@@ -477,7 +467,7 @@
 
 /**
  * Set zIndex
- * @params markerId
+ * @params command The first argument contains the marker ID, the second is the zIndex value
  */
 -(void)setZIndex:(CDVInvokedUrlCommand *)command
 {
@@ -495,7 +485,7 @@
 
 /**
  * Set draggable
- * @params markerId
+ * @params command The first argument contains the marker ID, the second is the draggable state
  */
 -(void)setDraggable:(CDVInvokedUrlCommand *)command
 {
@@ -514,7 +504,7 @@
 
 /**
  * Set disable auto pan
- * @params markerId
+ * @params command The first argument contains the marker ID, the second is the disableAutoPan state
  */
 -(void)setDisableAutoPan:(CDVInvokedUrlCommand *)command
 {
@@ -536,7 +526,7 @@
 
 /**
  * Set visibility
- * @params markerId
+ * @params command The first argument contains the marker ID, the second is the visibility state
  */
 -(void)setVisible:(CDVInvokedUrlCommand *)command
 {
@@ -567,7 +557,7 @@
 
 /**
  * Set position
- * @params key
+ * @params command The first argument contains the marker ID, the second is latitude, the third is longitude
  */
 -(void)setPosition:(CDVInvokedUrlCommand *)command
 {
@@ -589,7 +579,7 @@
 
 /**
  * Set flattable
- * @params markerId
+ * @params command The first argument contains the marker ID, the second is the flattable state
  */
 -(void)setFlat:(CDVInvokedUrlCommand *)command
 {
@@ -608,7 +598,7 @@
 
 /**
  * set icon
- * @params markerId
+ * @params command The first argument contains the marker ID, the second is the icon property
  */
 -(void)setIcon:(CDVInvokedUrlCommand *)command
 {
@@ -658,7 +648,8 @@
   }];
 }
 /**
- * set rotation
+ * Set rotation
+ * @params command The first argument contains the marker ID, the second is the rotation value
  */
 -(void)setRotation:(CDVInvokedUrlCommand *)command
 {
@@ -675,8 +666,10 @@
     }];
   }];
 }
-
-
+/**
+ * Set animation
+ * @params command The first argument contains the marker ID, the second is the animation type
+ */
 -(void)setAnimation:(CDVInvokedUrlCommand *)command
 {
 

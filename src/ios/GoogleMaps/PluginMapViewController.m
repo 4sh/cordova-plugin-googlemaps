@@ -10,15 +10,16 @@
 
 @implementation PluginMapViewController
 
-- (void)mapView:(GMSMapView *)mapView didTapPOIWithPlaceID:(NSString *)placeID name:(NSString *)name location:(CLLocationCoordinate2D)location {
+- (void)mapView:(GMSMapView *)mapView
+didTapPOIWithPlaceID:(NSString *)placeID
+           name:(NSString *)name
+       location:(CLLocationCoordinate2D)location {
   NSString* jsName = [name stringByReplacingOccurrencesOfString:@"'" withString:@"\\'"];
   jsName = [jsName stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
   jsName = [jsName stringByReplacingOccurrencesOfString:@"\r" withString:@"\\r"];
-
-  NSString* jsString = [NSString
-                        stringWithFormat:@"javascript:if('%@' in plugin.google.maps){plugin.google.maps['%@']({evtName: '%@', callback: '_onMapEvent', args: ['%@', \"%@\", new plugin.google.maps.LatLng(%f,%f)]});}",
-                        self.overlayId, self.overlayId, @"poi_click", placeID, jsName, location.latitude, location.longitude];
-  [self execJS:jsString];
+  
+  [self execJS:[NSString stringWithFormat:@"javascript:if('%@' in plugin.google.maps){plugin.google.maps['%@']({evtName: '%@', callback: '_onMapEvent', args: ['%@', \"%@\", new plugin.google.maps.LatLng(%f,%f)]});}",
+                self.overlayId, self.overlayId, @"poi_click", placeID, jsName, location.latitude, location.longitude]];
 }
 
 /**
@@ -64,12 +65,7 @@
     [self execJS:jsString];
 }
 
-/**
- * @callback the my location button is clicked.
- */
 - (void)mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate {
-
-
   if (self.activeMarker) {
     /*
      NSString *clusterId_markerId =[NSString stringWithFormat:@"%@", self.activeMarker.userData];
@@ -188,11 +184,9 @@
   CLLocationCoordinate2D hitArea = [self.map.projection coordinateForPoint:CGPointMake(1, 1)];
   CLLocationDistance threshold = GMSGeometryDistance(origin, hitArea);
 
-
-
-  //
   maxZIndex = -1;
-  CLLocationCoordinate2D touchPoint;
+  CLLocationCoordinate2D touchPoint = kCLLocationCoordinate2DInvalid;
+
   for (i = 0; i < [boundsHitList count]; i++) {
     key = [boundsHitList objectAtIndex:i];
     //plugin = [boundsPluginList objectAtIndex:i];
@@ -260,7 +254,7 @@
 
   }
 
-  if (hitKey != nil) {
+  if (hitKey != nil && CLLocationCoordinate2DIsValid(touchPoint)) {
     NSArray *tmp = [hitKey componentsSeparatedByString:@"_"];
     NSString *eventName = [NSString stringWithFormat:@"%@_click", [tmp objectAtIndex:0]];
     [self triggerOverlayEvent:eventName overlayId:hitKey coordinate:touchPoint];
@@ -270,15 +264,16 @@
 
 
 }
+
 /**
- * @callback map long_click
+ * map_long_click
  */
 - (void) mapView:(GMSMapView *)mapView didLongPressAtCoordinate:(CLLocationCoordinate2D)coordinate {
   [self triggerMapEvent:@"map_long_click" coordinate:coordinate];
 }
 
 /**
- * @callback plugin.google.maps.event.CAMERA_MOVE_START
+ * plugin.google.maps.event.CAMERA_MOVE_START
  */
 - (void) mapView:(GMSMapView *)mapView willMove:(BOOL)gesture
 {
@@ -290,9 +285,8 @@
   [self triggerCameraEvent:@"camera_move_start" position:self.map.camera];
 }
 
-
 /**
- * @callback plugin.google.maps.event.CAMERA_MOVE
+ * plugin.google.maps.event.CAMERA_MOVE
  */
 - (void)mapView:(GMSMapView *)mapView didChangeCameraPosition:(GMSCameraPosition *)position {
 
@@ -303,7 +297,7 @@
 }
 
 /**
- * @callback plugin.google.maps.event.CAMERA_MOVE_END
+ * plugin.google.maps.event.CAMERA_MOVE_END
  */
 - (void) mapView:(GMSMapView *)mapView idleAtCameraPosition:(GMSCameraPosition *)position
 {
@@ -314,9 +308,8 @@
   self.isDragging = NO;
 }
 
-
 /**
- * @callback marker info_click
+ * marker info_click
  */
 - (void) mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker
 {
@@ -341,8 +334,9 @@
     [self triggerMarkerEvent:@"info_long_click" marker:marker];
   }
 }
+
 /**
- * @callback plugin.google.maps.event.MARKER_DRAG_START
+ * plugin.google.maps.event.MARKER_DRAG_START
  */
 - (void) mapView:(GMSMapView *) mapView didBeginDraggingMarker:(GMSMarker *)marker
 {
@@ -354,8 +348,9 @@
     [self triggerMarkerEvent:@"marker_drag_start" marker:marker];
   }
 }
+
 /**
- * @callback plugin.google.maps.event.MARKER_DRAG_END
+ * plugin.google.maps.event.MARKER_DRAG_END
  */
 - (void) mapView:(GMSMapView *) mapView didEndDraggingMarker:(GMSMarker *)marker
 {
@@ -367,8 +362,9 @@
     [self triggerMarkerEvent:@"marker_drag_end" marker:marker];
   }
 }
+
 /**
- * @callback plugin.google.maps.event.MARKER_DRAG
+ * plugin.google.maps.event.MARKER_DRAG
  */
 - (void) mapView:(GMSMapView *) mapView didDragMarker:(GMSMarker *)marker
 {
@@ -396,7 +392,7 @@
 }
 
 /**
- * @callback plugin.google.maps.event.MARKER_CLICK
+ * plugin.google.maps.event.MARKER_CLICK
  */
 - (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker {
 

@@ -27,7 +27,6 @@
 
 - (void)pluginUnload
 {
-
   // Plugin destroy
   NSArray *keys = [self.mapCtrl.objects allKeys];
   NSString *key;
@@ -41,15 +40,6 @@
       }
       [self.mapCtrl.objects removeObjectForKey:key];
   }
-
-  key = nil;
-  keys = nil;
-
-  NSString *pluginId = [NSString stringWithFormat:@"%@-polyline", self.mapCtrl.overlayId];
-  CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-  [cdvViewController.pluginObjects removeObjectForKey:pluginId];
-  [cdvViewController.pluginsMap setValue:nil forKey:pluginId];
-  pluginId = nil;
 }
 
 -(void)create:(CDVInvokedUrlCommand *)command
@@ -290,11 +280,10 @@
 
 /**
  * Set color
- * @params key
+ * @params command The first argument contains the polyline ID, the second is the color value
  */
 -(void)setStrokeColor:(CDVInvokedUrlCommand *)command
 {
-
   [self.mapCtrl.executeQueue addOperationWithBlock:^{
       NSString *polylineKey = [command.arguments objectAtIndex:0];
       GMSPolyline *polyline = (GMSPolyline *)[self.mapCtrl.objects objectForKey:polylineKey];
@@ -313,7 +302,7 @@
 
 /**
  * Set width
- * @params key
+ * @params command The first argument contains the polyline ID, the second is the width value
  */
 -(void)setStrokeWidth:(CDVInvokedUrlCommand *)command
 {
@@ -334,7 +323,7 @@
 
 /**
  * Set z-index
- * @params key
+ * @params command The first argument contains the polyline ID, the second is the z-index value
  */
 -(void)setZIndex:(CDVInvokedUrlCommand *)command
 {
@@ -364,7 +353,7 @@
 
 /**
  * Set clickable
- * @params key
+ * @params command The first argument contains the polyline ID, the second is the clickable flag
  */
 -(void)setClickable:(CDVInvokedUrlCommand *)command
 {
@@ -385,13 +374,13 @@
       [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
   }];
 }
+
 /**
  * Set visibility
- * @params key
+ * @params command The first argument contains the polyline ID, the second is the visibility flag
  */
 -(void)setVisible:(CDVInvokedUrlCommand *)command
 {
-
   [self.mapCtrl.executeQueue addOperationWithBlock:^{
       NSString *polylineKey = [command.arguments objectAtIndex:0];
       GMSPolyline *polyline = (GMSPolyline *)[self.mapCtrl.objects objectForKey:polylineKey];
@@ -402,7 +391,6 @@
                                          [self.mapCtrl.objects objectForKey:propertyId]];
       [properties setObject:[NSNumber numberWithBool:isVisible] forKey:@"isVisible"];
       [self.mapCtrl.objects setObject:properties forKey:propertyId];
-
 
       // Run on the UI thread
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -417,13 +405,13 @@
       }];
   }];
 }
+
 /**
  * Set geodesic
- * @params key
+ * @params command The first argument contains the polyline ID, the second is the geodesic flag
  */
 -(void)setGeodesic:(CDVInvokedUrlCommand *)command
 {
-
   [self.mapCtrl.executeQueue addOperationWithBlock:^{
       NSString *polylineKey = [command.arguments objectAtIndex:0];
       GMSPolyline *polyline = (GMSPolyline *)[self.mapCtrl.objects objectForKey:polylineKey];
@@ -449,11 +437,10 @@
 
 /**
  * Remove the polyline
- * @params key
+ * @params command The first argument contains the polyline ID
  */
 -(void)remove:(CDVInvokedUrlCommand *)command
 {
-
   [self.mapCtrl.executeQueue addOperationWithBlock:^{
     NSString *polylineKey = [command.arguments objectAtIndex:0];
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{

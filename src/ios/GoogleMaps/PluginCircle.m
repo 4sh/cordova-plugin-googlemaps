@@ -21,12 +21,13 @@
 
 - (void)pluginUnload
 {
-
     // Plugin destroy
     NSArray *keys = [self.mapCtrl.objects allKeys];
     NSString *key;
+    
     for (int i = 0; i < [keys count]; i++) {
         key = [keys objectAtIndex:i];
+
         if ([key hasPrefix:@"circle_property"]) {
           key = [key stringByReplacingOccurrencesOfString:@"_property" withString:@""];
           GMSCircle *circle = (GMSCircle *)[self.mapCtrl.objects objectForKey:key];
@@ -35,15 +36,6 @@
         }
         [self.mapCtrl.objects removeObjectForKey:key];
     }
-
-    key = nil;
-    keys = nil;
-
-    NSString *pluginId = [NSString stringWithFormat:@"%@-circle", self.mapCtrl.overlayId];
-    CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-    [cdvViewController.pluginObjects removeObjectForKey:pluginId];
-    [cdvViewController.pluginsMap setValue:nil forKey:pluginId];
-    pluginId = nil;
 }
 -(void)setPluginViewController:(PluginViewController *)viewCtrl
 {
@@ -138,9 +130,10 @@
 
     });
 }
+
 /**
  * Set center
- * @params key
+ * @params command First Argument is circle ID, Second is latitude, Third is longitude
  */
 -(void)setCenter:(CDVInvokedUrlCommand *)command
 {
@@ -164,7 +157,7 @@
 
 /**
  * Set fill color
- * @params key
+ * @params command First Argument is circle ID, Second is RGB color array
  */
 -(void)setFillColor:(CDVInvokedUrlCommand *)command
 {
@@ -182,10 +175,9 @@
     }];
 }
 
-
 /**
  * Set stroke color
- * @params key
+ * @params command First Argument is circle ID, Second is RGB color array
  */
 -(void)setStrokeColor:(CDVInvokedUrlCommand *)command
 {
@@ -205,7 +197,7 @@
 
 /**
  * Set stroke width
- * @params key
+ * @params command First Argument is circle ID, Second is stroke width
  */
 -(void)setStrokeWidth:(CDVInvokedUrlCommand *)command
 {
@@ -225,7 +217,7 @@
 
 /**
  * Set radius
- * @params key
+ * @params command First Argument is circle ID, Second is radius
  */
 -(void)setRadius:(CDVInvokedUrlCommand *)command
 {
@@ -241,9 +233,10 @@
         }];
     }];
 }
+
 /**
  * Set z-index
- * @params key
+ * @params command First Argument is circle ID, Second is z-index
  */
 -(void)setZIndex:(CDVInvokedUrlCommand *)command
 {
@@ -262,7 +255,7 @@
 
 /**
  * Set visibility
- * @params key
+ * @params command First Argument is circle ID, Second is visibility
  */
 -(void)setVisible:(CDVInvokedUrlCommand *)command
 {
@@ -293,11 +286,9 @@
 
     }];
 }
-
-
 /**
  * Set clickable
- * @params key
+ * @params command First Argument is circle ID, Second is clickable
  */
 -(void)setClickable:(CDVInvokedUrlCommand *)command
 {
@@ -321,7 +312,7 @@
 
 /**
  * Remove the circle
- * @params key
+ * @params command First Argument is circle ID
  */
 -(void)remove:(CDVInvokedUrlCommand *)command
 {

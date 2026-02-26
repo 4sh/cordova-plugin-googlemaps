@@ -30,15 +30,6 @@
       }
       [self.mapCtrl.objects removeObjectForKey:key];
   }
-
-  key = nil;
-  keys = nil;
-
-  NSString *pluginId = [NSString stringWithFormat:@"%@-polygon", self.mapCtrl.overlayId];
-  CDVViewController *cdvViewController = (CDVViewController*)self.viewController;
-  [cdvViewController.pluginObjects removeObjectForKey:pluginId];
-  [cdvViewController.pluginsMap setValue:nil forKey:pluginId];
-  pluginId = nil;
 }
 
 
@@ -527,9 +518,10 @@
   }];
 
 }
+  
 /**
  * Set fill color
- * @params key
+ * @params command The first argument contains the polygon ID, the second is the fill color as array
  */
 -(void)setFillColor:(CDVInvokedUrlCommand *)command
 {
@@ -552,10 +544,9 @@
 
 }
 
-
 /**
  * Set stroke color
- * @params key
+ * @params command The first argument contains the polygon ID, the second is the stroke color as array
  */
 -(void)setStrokeColor:(CDVInvokedUrlCommand *)command
 {
@@ -579,7 +570,7 @@
 
 /**
  * Set stroke width
- * @params key
+ * @params command The first argument contains the polygon ID, the second is the stroke width
  */
 -(void)setStrokeWidth:(CDVInvokedUrlCommand *)command
 {
@@ -588,7 +579,6 @@
       NSString *polygonKey = [command.arguments objectAtIndex:0];
       GMSPolygon *polygon = [self.mapCtrl.objects objectForKey:polygonKey];
       float width = [[command.arguments objectAtIndex:1] floatValue];
-
 
       // Apply to the polygon on UI thread.
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -602,7 +592,7 @@
 
 /**
  * Set z-index
- * @params key
+ * @params command The first argument contains the polygon ID, the second is the z-index value
  */
 -(void)setZIndex:(CDVInvokedUrlCommand *)command
 {
@@ -635,7 +625,7 @@
 
 /**
  * Set clickable
- * @params key
+ * @params command The first argument contains the polygon ID, the second is the clickable flag
  */
 -(void)setClickable:(CDVInvokedUrlCommand *)command
 {
@@ -663,7 +653,7 @@
 
 /**
  * Set visibility
- * @params key
+ * @params command The first argument contains the polygon ID, the second is the visibility flag
  */
 -(void)setVisible:(CDVInvokedUrlCommand *)command
 {
@@ -695,24 +685,22 @@
           [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
       }];
   }];
-
 }
+
 /**
  * Set geodesic
- * @params key
+ * @params command The first argument contains the polygon ID, the second is the geodesic flag
  */
 -(void)setGeodesic:(CDVInvokedUrlCommand *)command
 {
-
   [self.mapCtrl.executeQueue addOperationWithBlock:^{
-
       NSString *polygonKey = [command.arguments objectAtIndex:0];
       GMSPolygon *polygon = [self.mapCtrl.objects objectForKey:polygonKey];
-      Boolean isGeodisic = [[command.arguments objectAtIndex:1] boolValue];
+      Boolean isGeodesic = [[command.arguments objectAtIndex:1] boolValue];
 
       // Apply to the polygon on UI thread.
       [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-          [polygon setGeodesic:isGeodisic];
+          [polygon setGeodesic:isGeodesic];
 
           CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
           [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -722,12 +710,10 @@
 
 /**
  * Remove the polygon
- * @params key
+ * @params command The first argument contains the polygon ID
  */
 -(void)remove:(CDVInvokedUrlCommand *)command
 {
-
-
     // Apply to the polygon on UI thread.
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         NSString *polygonKey = [command.arguments objectAtIndex:0];
@@ -740,7 +726,6 @@
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }];
-
 }
 
 @end

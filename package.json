@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-googlemaps",
-  "version": "2.7.4",
+  "version": "2.7.5",
   "description": "Google Maps native SDK for Android and iOS, and Google Maps JavaScript API v3 for browser.",
   "cordova": {
     "id": "cordova-plugin-googlemaps",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mapsplugin/cordova-plugin-googlemaps.git"
+    "url": "https://github.com/4sh/cordova-plugin-googlemaps.git"
   },
   "keywords": [
     "google",
@@ -24,42 +24,32 @@
     "cordova-ios",
     "cordova-browser"
   ],
-  "engines": [
-    {
-      "name": "cordova-android",
-      "version": ">=5.1.0"
-    },
-    {
-      "name": "cordova-ios",
-      "version": ">=5.1.1"
-    },
-    {
-      "name": "apple-xcode",
-      "version": ">=10.0.0"
-    },
-    {
-      "name": "apple-ios",
-      "version": ">=10.0.0"
-    }
-  ],
   "scripts": {
-    "test": "jest && npm run eslint",
-    "jest": "jest",
-    "test:watch": "jest --watch",
-    "eslint": "node node_modules/eslint/bin/eslint www src"
+    "test": "npm run lint",
+    "lint": "eslint ."
   },
-  "author": "Masashi Katsumata, Hirbod Mirjavadi",
+  "author": "Masashi Katsumata, Hirbod Mirjavadi, Manuel Beck, 4SH",
   "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/mapsplugin/cordova-plugin-googlemaps/issues"
+  "homepage": "https://github.com/4sh/cordova-plugin-googlemaps",
+  "engines": {
+    "cordovaDependencies": {
+      "2.7.0": {
+        "cordova": ">=9.0.0",
+        "cordova-android": ">=5.1.0",
+        "cordova-ios": ">=5.1.1"
+      },
+      "2.8.0": {
+        "cordova": ">=12.0.0",
+        "cordova-android": ">=13.0.0",
+        "cordova-ios": ">=7.0.0"
+      }
+    }
   },
-  "homepage": "https://github.com/mapsplugin/cordova-plugin-googlemaps",
   "devDependencies": {
-    "cordova-js": "^4.2.4",
-    "eslint": "^5.7.0",
-    "jest": "^23.6.0"
+    "@cordova/eslint-config": "^5.1.0"
   },
-  "dependencies": {
-    "cordova-common": "^3.1.0"
-  }
+  "eslintConfig": {
+    "extends": "@cordova/eslint-config/node"
+  },
+  "type": "commonjs"
 }
